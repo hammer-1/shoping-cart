@@ -1,0 +1,165 @@
+<html>
+
+<head>
+
+
+</head>
+
+<body>
+    <script src="cart.js" defer></script>
+    <div style="border: 0px; width:100%; height: 10rem;">
+        <div style="display: flex;
+        justify-content: center;
+        padding: 20px; 
+        margin-left: 20px;">
+            Choose a car:<select id="cars" name="cars">
+                <option value=Volvo>Volvo</option>
+                <option value=Saab>Saab</option>
+                <option value=Mercedes>Mercedes</option>
+                <option value=Audi>Audi</option>
+            </select>
+            Choose number of car:<select id="Quantity">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+            </select>
+        </div>
+        <button onclick="addtocart()" style="border: none; border-radius: 20px; margin-left: 50rem; padding:10px ; 
+        ">Add to cart</button>
+        <div id="result" style="color:rgb(7, 99, 24);"></div>
+
+    </div>
+    <div style="display:flexbox ; ">
+        <h3 style="margin-left: 30rem">Contact details</h3>
+        <input type="text" id="name" placeholder="Name" type="checkbox" required
+            style=" align-items: stretch; margin:10px; margin-left: 35rem; border-radius: 15px; text-align: center;padding:10px;border: none;" /><br>
+        <input type="text" id="Email" placeholder="Email" type="email" required
+            style="align-items: stretch;margin: 10px; margin-left: 35rem; border-radius: 15px;text-align: center;padding:10px;border: none;" /><br>
+        <input type="text" id="Number" placeholder="Number" type="number" required
+            style="align-items: stretch ;margin: 10px;margin-left: 35rem;border-radius: 15px;text-align: center;padding:10px;border: none;" /><br>
+        <button onclick="validateform()"
+            style="border: none; border-radius: 10px; margin-left: 41rem; margin-top: 1rem;padding:10px ;"
+            type="submit">Add contact detail</button>
+
+    </div>
+    <div id="orderdetail" style="color: rgb(3, 131, 89);"></div>
+
+    <div style="display: flex; justify-content: flex-end;border:  0px; padding: 40px; margin-top: 100px;">
+        <input type="text" id="ordernumber" placeholder="Enter order number" style="text-align: center;" />
+        <button onclick="verifyorder()">verifyorder</button>
+    </div>
+
+    <div id="orderverification" style="color: rgb(3, 131, 89);"></div>
+
+
+
+
+    <script>                                // javascript start from here 
+        let yt = [{
+            name: "Volvo",
+            price: 45670
+        }, {
+            name: "Saab",
+            price: 567460
+        }, {
+            name: "Mercedes",
+            price: 507580
+        }, {
+            name: "Audi",
+            price: 945455
+        }
+        ];
+        // let cardetail=[];
+        let cardetailobject = {};
+        Tofindordernumber = [];
+        let myItem = document.getElementById("cars");
+
+        // let ty = [];
+        function addtocart() {
+            for (let i = 0; i < yt.length; i++) {
+                // console.log(myItem.value);
+                // console.log(yt[i].name);
+                if ((myItem.value) === (yt[i].name)) {
+                    console.log("inside");
+                    result.innerText = ` your car is ${yt[i].name} and you have order ${Quantity.value} cars so total price is $${(yt[i].price) * Quantity.value}  and please insert contact detail to order`;
+                    // cardetailobject.car = `${yt[i].name}`;
+                    cardetailobject.car = `${myItem.value}`;
+                    cardetailobject.price = `${(yt[i].price) * Quantity.value}`;
+                    console.log(cardetailobject);
+                    // Tofindordernumber.push(cardetailobject);
+                    // cardetailobject = {};
+
+                    // ty.push(cardetailobject);
+                    // console.log(ty);
+                }
+            }
+            // console.log(Tofindordernumber);
+
+
+        }
+        // console.log(cardetail);
+        function validateform() {                      //this function is used for form validation and to add user input to object
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("Email").value;
+            let number = document.getElementById("Number").value;
+            let regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;  //Javascript reGex for Email Validation.
+            let regPhone = /^\d{10}$/;                                        // Javascript reGex for Phone Number validation.
+            let regName = /\d+$/g;                                    // Javascript reGex for Name validation
+
+            if (name == "" || regName.test(name)) {
+                window.alert("Please enter your name properly.");
+                return false
+            }
+            else {
+                cardetailobject.customerName = name;
+            }
+            if (email == "" || !regEmail.test(email)) {
+                window.alert("Please enter a valid e-mail address.");
+                return false
+            }
+            else {
+                cardetailobject.email = email;
+            }
+            if (number == "" || !regPhone.test(number)) {
+                alert("Please enter valid phone number.");
+                return false
+            }
+            else {
+                cardetailobject.number = number;
+            }
+            if (cardetailobject.car === undefined) {
+                alert("please select car and quantities");
+                return false
+
+            }
+
+            orderdetail.innerText = `Ower name : ${cardetailobject.customerName}\n Email : ${cardetailobject.email}\n Phone number : ${cardetailobject.number}\n car order : ${cardetailobject.car}\n Total car order : ${Quantity.value}\n Total price : $${cardetailobject.price} `;
+            // console.log(cardetailobject);
+            // let Json = JSON.stringify(cardetailobject);
+            // console.log(Json);
+            Tofindordernumber.push(cardetailobject);
+            console.log(Tofindordernumber);
+            cardetailobject = {};
+
+        }
+        // console.log(Tofindordernumber);
+        function verifyorder() {
+            let ordernumbe = document.getElementById("ordernumber").value;
+            // console.log();
+            for (let i = 1; i <= Tofindordernumber.length; i++) {
+
+
+                if (ordernumbe == i) {
+                    orderverification.innerText = `Order number : ${i}\n Ower name : ${Tofindordernumber[i - 1].customerName}\n Email : ${Tofindordernumber[i - 1].email}\n Phone number : ${Tofindordernumber[i - 1].number}\n car order : ${Tofindordernumber[i - 1].car}\n Total car order : ${Quantity.value}\n Total price : $${Tofindordernumber[i - 1].price} `;
+                }
+            }
+
+        }
+    // console.log(Tofindordernumber);
+
+
+    </script>
+</body>
+
+</html>
